@@ -7,25 +7,37 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "[LiteRT/Reflect.js] Sample 01 - Commandless",
-            "program": "${workspaceFolder}/src/samples/01-command-less.ts",
+            "name": "[LiteRT/Reflect.js] Example 01 - Quick Start",
+            "program": "${workspaceFolder}/src/examples/01-quick-start.ts",
             "cwd": "${workspaceFolder}",
             "sourceMaps": true,
             "outFiles": [
                 "${workspaceFolder}/lib/*.js",
-                "${workspaceFolder}/samples/*.js"
+                "${workspaceFolder}/examples/*.js"
             ]
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "[LiteRT/Reflect.js] Sample 02 - Command help",
-            "program": "${workspaceFolder}/src/samples/02-command.ts",
+            "name": "[LiteRT/Reflect.js] Example 02 - Wrap Decorator",
+            "program": "${workspaceFolder}/src/examples/02-wrap-decorator.ts",
             "cwd": "${workspaceFolder}",
             "sourceMaps": true,
             "outFiles": [
                 "${workspaceFolder}/lib/*.js",
-                "${workspaceFolder}/samples/*.js"
+                "${workspaceFolder}/examples/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "[LiteRT/Reflect.js] Example 03 - AOP",
+            "program": "${workspaceFolder}/src/examples/03-aop.ts",
+            "cwd": "${workspaceFolder}",
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/lib/*.js",
+                "${workspaceFolder}/examples/*.js"
             ]
         }
     ]
