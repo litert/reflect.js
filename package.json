@@ -1,0 +1,44 @@
+{
+  "name": "@litert/reflect",
+  "version": "0.1.0",
+  "description": "A simple library for metadata with reflect implementation.",
+  "main": "./lib/index.js",
+  "scripts": {
+    "prepare": "npm run rebuild",
+    "build": "echo Using TypeScript && tsc -v && tsc -p .",
+    "build-watch": "echo Using TypeScript && tsc -v && tsc -w -p .",
+    "rebuild": "npm run clean && npm run lint && npm run build",
+    "test": "echo See directory src/samples",
+    "clean": "rm -rf lib samples",
+    "lint": "tslint -p . -c tslint.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/litert/reflect.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/litert/reflect.js/issues"
+  },
+  "homepage": "https://github.com/litert/reflect.js#readme",
+  "keywords": [
+    "litert",
+    "lrt",
+    "reflect",
+    "metadata",
+    "decorator"
+  ],
+  "author": "Angus.Fenying <i.am.x.fenying@gmail.com> (https://fenying.net)",
+  "license": "Apache-2.0",
+  "types": "./lib/index.d.ts",
+  "typings": "./lib/index.d.ts",
+  "devDependencies": {
+    "@types/node": "^8.0.6",
+    "typescript": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "@litert/core": "^1.0.0"
+  }
+}
