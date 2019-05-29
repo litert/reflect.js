@@ -36,18 +36,18 @@ class Test {
     }
 }
 
-let t = new Test(Reflect.getMetadataOfConstructorParamter(Test, 0, "value"));
+let t = new Test(Reflect.getMetadataOfConstructorParameter(Test, 0, "value"));
 
 t.print();
 
-Reflect.setMetadataOfConstructorParamter(
+Reflect.setMetadataOfConstructorParameter(
     Test,
     0,
     "value",
     2333
 );
 
-t = new Test(Reflect.getMetadataOfConstructorParamter(Test, 0, "value"));
+t = new Test(Reflect.getMetadataOfConstructorParameter(Test, 0, "value"));
 
 t.print();
 

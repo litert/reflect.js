@@ -121,10 +121,10 @@ export interface IReflectManager {
      * @param key       The key of metadata to be defined.
      * @param value     The value of metadata.
      */
-    setMetadataOfConstructorParamter(
+    setMetadataOfConstructorParameter(
         target: Function | Object,
         index: number,
-        key: string,
+        key: string | symbol,
         value: any
     ): void;
 
@@ -151,15 +151,26 @@ export interface IReflectManager {
     ): any;
 
     /**
-     * Get the value of metadata of specific property in a given class, by key.
+     * Get the keys of metadata of specific property in a given class.
      *
      * @param target    The given class.
      * @param name      The name of specific property.
-     * @param key       The key of metadata to be fetch.
      */
     getMetadataKeysOfProperty(
         target: Function | Object,
         name: string | symbol
+    ): Array<string | symbol>;
+
+    /**
+     * Get the keys of metadata of specific parameter in a given class
+     * constructor.
+     *
+     * @param target    The given class.
+     * @param index     The index of specific parameter.
+     */
+    getMetadataKeysOfConstructorParameter(
+        target: Function | Object,
+        index: number
     ): Array<string | symbol>;
 
     /**
@@ -224,10 +235,10 @@ export interface IReflectManager {
      * @param index     The index of parameter.
      * @param key       The key of metadata to be fetch.
      */
-    getMetadataOfConstructorParamter(
+    getMetadataOfConstructorParameter(
         target: Function | Object,
         index: number,
-        key: string
+        key: string | symbol
     ): any;
 
     /**
@@ -436,7 +447,7 @@ class ReflectManager implements IReflectManager {
         return p[key];
     }
 
-    public getMetadataOfConstructorParamter(
+    public getMetadataOfConstructorParameter(
         target: Function | Object,
         index: number,
         key: string
@@ -459,7 +470,32 @@ class ReflectManager implements IReflectManager {
         return p[key];
     }
 
-    public setMetadataOfConstructorParamter(
+    public getMetadataKeysOfConstructorParameter(
+        target: Function | Object,
+        index: number
+    ): any {
+
+        const cls = this._classes.get(target);
+
+        if (!cls) {
+
+            return undefined;
+        }
+
+        const p = cls.parameters[index];
+
+        if (!p) {
+
+            return undefined;
+        }
+
+        return [
+            ...Object.getOwnPropertyNames(p),
+            ...Object.getOwnPropertySymbols(p)
+        ];
+    }
+
+    public setMetadataOfConstructorParameter(
         target: Function | Object,
         index: number,
         key: string,

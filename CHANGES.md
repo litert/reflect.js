@@ -1,5 +1,12 @@
 # Change Logs
 
+## 0.2.1
+
+- Fixed the name of method `setMetadataOfConstructorParameter`.
+- Fixed the name of method `getMetadataOfConstructorParameter`.
+- Added method `getMetadataKeysOfConstructorParameter`.
+- Fixed the parameter type of method `getMetadataOfConstructorParameter`.
+
 ## 0.2.0
 
 - Fixed: Now the `metadata` method supports constructor parameter.
@@ -8,6 +15,6 @@
 - Added method `isForMethod`.
 - Added method `isForProperty`.
 - Added method `isForClass`.
-- Added method `setMetadataOfConstructorParamter`.
-- Added method `getMetadataOfConstructorParamter`.
+- Added method `setMetadataOfConstructorParameter`.
+- Added method `getMetadataOfConstructorParameter`.
 - Added method `hasParent`.
