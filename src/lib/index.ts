@@ -26,8 +26,53 @@ export interface IReflectManager {
      */
     metadata(key: number | string | symbol, value: any): {
         (target: Function): void;
-        (target: Object, propertyKey: string | symbol): void;
+        (target: Object, propertyKey: string | symbol, index?: any): void;
     };
+
+    /**
+     * [Use in the decorator callback]
+     *
+     * Check if the decorator is used for parameter of a class constructor.
+     *
+     * @param args The arguments passed to the decorator.
+     */
+    isForConstructorParameter(args: any[]): args is [Object, undefined, number];
+
+    /**
+     * [Use in the decorator callback]
+     *
+     * Check if the decorator is used for parameter of a class method.
+     *
+     * @param args The arguments passed to the decorator.
+     */
+    isForMethodParameter(args: any[]): args is Parameters<ParameterDecorator>;
+
+    /**
+     * [Use in the decorator callback]
+     *
+     * Check if the decorator is used for a class method.
+     *
+     * @param args The arguments passed to the decorator.
+     */
+    isForMethod(args: any[]): args is Parameters<MethodDecorator>;
+
+    /**
+     * [Use in the decorator callback]
+     *
+     * Check if the decorator is used for a class property.
+     *
+     * @param args The arguments passed to the decorator.
+     */
+    isForProperty(args: any[]): args is Parameters<PropertyDecorator>;
+
+    /**
+     * [Use in the decorator callback]
+     *
+     * Check if the decorator is used for a class.
+     *
+     * @param args The arguments passed to the decorator.
+     */
+    isForClass(args: any[]): args is Parameters<ClassDecorator>;
 
     /**
      * Get the names of methods that has metadata in a given class.
@@ -64,6 +109,22 @@ export interface IReflectManager {
     setMetadata(
         target: Function | Object,
         key: string | symbol,
+        value: any
+    ): void;
+
+    /**
+     * Set the value of metadata of specific constructor parameter in a given
+     * class, by key.
+     *
+     * @param target    The given class.
+     * @param index     The index of specific constructor parameter.
+     * @param key       The key of metadata to be defined.
+     * @param value     The value of metadata.
+     */
+    setMetadataOfConstructorParamter(
+        target: Function | Object,
+        index: number,
+        key: string,
         value: any
     ): void;
 
@@ -156,6 +217,20 @@ export interface IReflectManager {
     ): Array<string | symbol>;
 
     /**
+     * Get the value of metadata of class constructor parameter in a given class,
+     * by key.
+     *
+     * @param target    The given class.
+     * @param index     The index of parameter.
+     * @param key       The key of metadata to be fetch.
+     */
+    getMetadataOfConstructorParamter(
+        target: Function | Object,
+        index: number,
+        key: string
+    ): any;
+
+    /**
      * Get the value of metadata of specific method parameter in a given class,
      * by key.
      *
@@ -207,11 +282,20 @@ export interface IReflectManager {
      * @param target    The given class.
      */
     getParent(target: Function): Function;
+
+    /**
+     * Check if a class extends from any a parent/based class..
+     *
+     * @param target    The given class.
+     */
+    hasParent(target: Function): boolean;
 }
 
 interface IClassItem {
 
     "metadata": Record<string, any>;
+
+    "parameters": Record<string, Record<string, any>>;
 
     "properties": Record<string, Record<string, any>>;
 
@@ -239,15 +323,27 @@ class ReflectManager implements IReflectManager {
         return this._classes.get(target) || this._classes.set(target, {
 
             "metadata": {},
+            "parameters": {},
             "properties": {},
             "methods": {}
 
         }).get(target) as IClassItem;
     }
 
-    private _getProperty(target: IClassItem, name: string): Record<string, any> {
+    private _getProperty(
+        target: IClassItem,
+        name: string
+    ): Record<string, any> {
 
         return target.properties[name] || (target.properties[name] = {});
+    }
+
+    private _getConstructorParameter(
+        target: IClassItem,
+        index: number
+    ): Record<string, any> {
+
+        return target.parameters[index] || (target.parameters[index] = {});
     }
 
     private _getMethod(target: IClassItem, name: string): IMethodItem {
@@ -338,6 +434,41 @@ class ReflectManager implements IReflectManager {
         }
 
         return p[key];
+    }
+
+    public getMetadataOfConstructorParamter(
+        target: Function | Object,
+        index: number,
+        key: string
+    ): any {
+
+        const cls = this._classes.get(target);
+
+        if (!cls) {
+
+            return undefined;
+        }
+
+        const p = cls.parameters[index];
+
+        if (!p) {
+
+            return undefined;
+        }
+
+        return p[key];
+    }
+
+    public setMetadataOfConstructorParamter(
+        target: Function | Object,
+        index: number,
+        key: string,
+        value: any
+    ): void {
+
+        const cls = this._getClass(target);
+
+        this._getConstructorParameter(cls, index)[key] = value;
     }
 
     public getMetadataKeysOfProperty(
@@ -517,6 +648,46 @@ class ReflectManager implements IReflectManager {
         this._getParameter(cls, name, index)[key] = value;
     }
 
+    public isForConstructorParameter(args: any[]): args is [Object, undefined, number] {
+
+        return args.length === 3 &&
+               ["function", "object"].includes(typeof args[0]) &&
+               args[1] === undefined &&
+               Number.isInteger(args[2]);
+    }
+
+    public isForMethodParameter(args: any[]): args is Parameters<ParameterDecorator> {
+
+        return args.length === 3 &&
+               ["function", "object"].includes(typeof args[0]) &&
+               args[1] !== undefined &&
+               Number.isInteger(args[2]);
+    }
+
+    public isForMethod(args: any[]): args is Parameters<MethodDecorator> {
+
+        return args.length === 3 &&
+               ["function", "object"].includes(typeof args[0]) &&
+               args[1] !== undefined &&
+               typeof args[2] === "object";
+    }
+
+    public isForClass(args: any[]): args is Parameters<ClassDecorator> {
+
+        return args.length >= 1 &&
+               ["function", "object"].includes(typeof args[0]) &&
+               args[1] === undefined &&
+               args[2] === undefined;
+    }
+
+    public isForProperty(args: any[]): args is Parameters<PropertyDecorator> {
+
+        return args.length >= 2 &&
+               ["function", "object"].includes(typeof args[0]) &&
+               args[1] !== undefined &&
+               args[2] === undefined;
+    }
+
     public metadata(key: string, value: any): any {
 
         return (target: any, propertyKey: any, descriptor?: any): any => {
@@ -558,6 +729,10 @@ class ReflectManager implements IReflectManager {
                 }
 
             }
+            else if (typeof descriptor === "number") {
+
+                this._getConstructorParameter(cls, descriptor)[key] = value;
+            }
             else {
 
                 cls.metadata[key] = value;
@@ -573,6 +748,11 @@ class ReflectManager implements IReflectManager {
         }
 
         return undefined;
+    }
+
+    public hasParent(cls: any): boolean {
+
+        return typeof cls === "function" && !!cls.__proto__.prototype;
     }
 }
 

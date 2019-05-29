@@ -39,6 +39,30 @@
                 "${workspaceFolder}/lib/*.js",
                 "${workspaceFolder}/examples/*.js"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "[LiteRT/Reflect.js] Example 04 - Constructor Parameter",
+            "program": "${workspaceFolder}/src/examples/04-constructor-parameters.ts",
+            "cwd": "${workspaceFolder}",
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/lib/*.js",
+                "${workspaceFolder}/examples/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "[LiteRT/Reflect.js] Example 05 - Decorator",
+            "program": "${workspaceFolder}/src/examples/05-decorators.ts",
+            "cwd": "${workspaceFolder}",
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/lib/*.js",
+                "${workspaceFolder}/examples/*.js"
+            ]
         }
     ]
 }
