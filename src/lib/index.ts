@@ -269,9 +269,9 @@ export interface IReflectManager {
      */
     setMetadataOfParameter(
         target: Function | Object,
-        name: string,
+        name: string | symbol,
         index: number,
-        key: string,
+        key: string | symbol,
         value: any
     ): void;
 

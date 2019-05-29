@@ -1,5 +1,9 @@
 # Change Logs
 
+## 0.2.2
+
+- Fixed symbol name and key for method `setMetadataOfParameter`.
+
 ## 0.2.1
 
 - Fixed the name of method `setMetadataOfConstructorParameter`.
