@@ -1,5 +1,9 @@
 # Change Logs
 
+## 0.2.4
+
+- Fixed when passing prototype as notation target.
+
 ## 0.2.2
 
 - Fixed symbol name and key for method `setMetadataOfParameter`.

@@ -331,6 +331,11 @@ class ReflectManager implements IReflectManager {
 
     private _getClass(target: any): IClassItem {
 
+        if (target.constructor && target.constructor.prototype === target) {
+
+            target = target.constructor;
+        }
+
         return this._classes.get(target) || this._classes.set(target, {
 
             "metadata": {},
@@ -728,9 +733,7 @@ class ReflectManager implements IReflectManager {
 
         return (target: any, propertyKey: any, descriptor?: any): any => {
 
-            const cls = this._getClass(
-                typeof target === "function" ? target : target.constructor
-            );
+            const cls = this._getClass(target);
 
             if (propertyKey !== undefined) {
 
