@@ -1,0 +1,7 @@
+/src/examples/
+/examples/
+/lib/
+/test/
+/src/test/
+/node_modules/
+/*.js

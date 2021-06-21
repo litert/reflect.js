@@ -1,16 +1,17 @@
 {
   "name": "@litert/reflect",
-  "version": "0.2.4",
-  "description": "A simple library for metadata with reflect implementation.",
+  "version": "1.0.0",
+  "description": "A simple implementation of reflect & metadata.",
   "main": "./lib/index.js",
   "scripts": {
-    "prepare": "npm run rebuild",
+    "prepublishOnly": "npm run rebuild",
     "build": "echo Using TypeScript && tsc -v && tsc -p .",
     "build-watch": "echo Using TypeScript && tsc -v && tsc -w -p .",
     "rebuild": "npm run clean && npm run lint && npm run build",
     "test": "echo See directory src/samples",
     "clean": "rm -rf lib examples",
-    "lint": "tslint -p . -c tslint.json"
+    "typecheck": "tsc -p . --noEmit",
+    "lint": "eslint --ext ts src"
   },
   "repository": {
     "type": "git",
@@ -21,21 +22,30 @@
   },
   "homepage": "https://github.com/litert/reflect.js#readme",
   "keywords": [
-    "litert",
-    "lrt",
     "reflect",
-    "metadata",
-    "decorator"
+    "metadata"
   ],
   "author": "Angus.Fenying <i.am.x.fenying@gmail.com> (https://fenying.net)",
   "license": "Apache-2.0",
   "types": "./lib/index.d.ts",
   "typings": "./lib/index.d.ts",
   "devDependencies": {
-    "typescript": "^3.2.0"
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^15.12.2",
+    "@typescript-eslint/eslint-plugin": "^4.26.1",
+    "@typescript-eslint/parser": "^4.26.1",
+    "eslint": "^7.28.0",
+    "husky": "^6.0.0",
+    "mocha": "^9.0.0",
+    "typescript": "^4.3.2"
   },
   "engines": {
     "node": ">=8.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@litert/decorator": "^0.2.1",
+    "reflect-metadata": "^0.1.13"
+  }
 }

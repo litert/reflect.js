@@ -1,5 +1,9 @@
 # Change Logs
 
+## v1.0.0
+
+- feat(api): refactored the project with new apis.
+
 ## 0.2.4
 
 - Fixed when passing prototype as notation target.

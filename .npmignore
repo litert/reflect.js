@@ -3,3 +3,7 @@
 /tslint.json
 /.vscode/
 /.git/
+/test/
+/examples/
+/src/test/
+/src/examples/

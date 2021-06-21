@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-import { IReflectManager } from './Common';
-import { createReflectManager } from './ReflectManager';
+import $Reflect from '../lib';
 
-const defaultManager: IReflectManager = createReflectManager();
+$Reflect.metadata('test', 123)
+class Demo {
 
-export default defaultManager;
+}
 
-export { createReflectManager };
-
-export * from './Common';
+console.log($Reflect.getClassMetadata(Demo, 'test'));

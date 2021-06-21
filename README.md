@@ -7,11 +7,11 @@
 [![GitHub issues](https://img.shields.io/github/issues/litert/reflect.js.svg)](https://github.com/litert/reflect.js/issues)
 [![GitHub Releases](https://img.shields.io/github/release/litert/reflect.js.svg)](https://github.com/litert/reflect.js/releases "Stable Release")
 
-A simple library for metadata with reflect implementation.
+A simple implementation of reflect & metadata.
 
 ## Requirement
 
-- TypeScript v3.3.x (or newer)
+- TypeScript v4.3.x (or newer)
 - ECMAScript 2017 (or newer)
 
 ## Installation
