@@ -242,6 +242,8 @@ function setMetadata(
             case 'multiple':
                 slot.push(value);
                 break;
+            case 'reject':
+                throw new Error(`Cat not edit a existing metadata "${metadataKeyToString(key)}".`);
             default:
                 throw new Error(`Failed to update the metadata "${metadataKeyToString(key)}".`);
         }
@@ -268,6 +270,7 @@ function getMetadata(
 
         switch (opts.onDuplicated) {
             case 'overwrite':
+            case 'reject':
                 return slot[0];
             case 'multiple':
                 return slot;
@@ -862,7 +865,7 @@ class ReflectManager implements C.IReflectManager {
     public getMethodParameterTypes(
         ctor: $Decorators.IClassCtor,
         name: C.IIdentityKey,
-    ): C.IDesignType | null {
+    ): C.IDesignType[] | null {
 
         return Reflect.getMetadata('design:paramtypes', ctor.prototype, name) ?? null;
     }
@@ -896,7 +899,14 @@ class ReflectManager implements C.IReflectManager {
         name: C.IIdentityKey,
     ): C.IDesignType | null {
 
-        return Reflect.getMetadata('design:paramtypes', ctor.prototype, name) ?? null;
+        const ret = Reflect.getMetadata('design:paramtypes', ctor.prototype, name);
+
+        if (Array.isArray(ret)) {
+
+            return ret[0];
+        }
+
+        return null;
     }
 
     public getStaticAccessorParameterType(
@@ -904,7 +914,14 @@ class ReflectManager implements C.IReflectManager {
         name: C.IIdentityKey,
     ): C.IDesignType | null {
 
-        return Reflect.getMetadata('design:paramtypes', ctor, name) ?? null;
+        const ret = Reflect.getMetadata('design:paramtypes', ctor, name);
+
+        if (Array.isArray(ret)) {
+
+            return ret[0];
+        }
+
+        return null;
     }
 
     public getPropertyType(
@@ -928,7 +945,14 @@ class ReflectManager implements C.IReflectManager {
         name: C.IIdentityKey,
     ): C.IDesignType | null {
 
-        return Reflect.getMetadata('design:returntype', ctor.prototype, name) ?? null;
+        let ret = Reflect.getMetadata('design:returntype', ctor.prototype, name);
+
+        if (ret === undefined) {
+
+            ret = Reflect.hasMetadata('design:returntype', ctor.prototype, name) ? undefined : null;
+        }
+
+        return ret;
     }
 
     public getStaticMethodReturnType(
@@ -936,7 +960,14 @@ class ReflectManager implements C.IReflectManager {
         name: C.IIdentityKey,
     ): C.IDesignType | null {
 
-        return Reflect.getMetadata('design:returntype', ctor, name) ?? null;
+        let ret = Reflect.getMetadata('design:returntype', ctor, name);
+
+        if (ret === undefined) {
+
+            ret = Reflect.hasMetadata('design:returntype', ctor, name) ? undefined : null;
+        }
+
+        return ret;
     }
 }
 

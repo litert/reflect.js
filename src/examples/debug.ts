@@ -1,24 +1,47 @@
-/**
- * Copyright 2021 Angus.Fenying <fenying@litert.org>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import $Decorators, { IClassCtor } from '@litert/decorator';
 
-import $Reflect from '../lib';
+class B {}
 
-$Reflect.metadata('test', 123)
-class Demo {
+@$Decorators.createClassDecorator(() => { return; })
+export class A {
 
+    @$Decorators.createPropertyDecorator(() => null)
+    public readonly valueX: null = null;
+
+    public constructor(
+        public readonly value: number
+    ) {}
+
+    @$Decorators.createMethodDecorator(() => { return; })
+    public add(a: number, b: number): number {
+
+        return a + b;
+    }
+
+    @$Decorators.createStaticMethodDecorator(() => { return; })
+    public static multiple(a: number, b: number, c?: string | number): number {
+
+        return a * b;
+    }
+
+    @$Decorators.createStaticMethodDecorator(() => { return; })
+    public static multipleX(a: number, b: number): B {
+
+        console.log(a * b);
+
+        return new B();
+    }
+
+    @$Decorators.createStaticPropertyDecorator(() => { return; })
+    public static sValue: number = 233;
+
+    @$Decorators.createStaticAccessorDecorator(() => { return; })
+    public static set sSetter(v: number) { return; }
 }
 
-console.log($Reflect.getClassMetadata(Demo, 'test'));
+function t<T extends IClassCtor>(x: T): void {}
+
+t(Object);
+t(Number);
+t(String);
+t(Boolean);

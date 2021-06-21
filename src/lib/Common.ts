@@ -560,7 +560,7 @@ export interface IReflectManager {
     getMethodParameterTypes(
         ctor: $Decorators.IClassCtor,
         name: IIdentityKey,
-    ): IDesignType | null;
+    ): IDesignType[] | null;
 
     /**
      * Get design type of a static method parameter.
@@ -821,7 +821,7 @@ export interface IMetadataOptions {
     /**
      * The processing rule while duplicated metadata applied in the same element.
      */
-    onDuplicated: 'overwrite' | 'multiple';
+    onDuplicated: 'overwrite' | 'multiple' | 'reject';
 
     /**
      * The validator of data executed before saved into metadata vessel.
