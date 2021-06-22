@@ -2,7 +2,7 @@ import $Reflect, * as $Reflects from '../lib';
 import * as $Decorators from '@litert/decorator';
 import * as $Assert from 'assert';
 
-export function generateClassTest(
+export function testClassDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -36,7 +36,7 @@ export function generateClassTest(
     }
 }
 
-export function generateCtorParamTest(
+export function testCtorParamDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -74,7 +74,7 @@ export function generateCtorParamTest(
     }
 }
 
-export function generateMethodTest(
+export function testMethodDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -110,7 +110,7 @@ export function generateMethodTest(
     }
 }
 
-export function generateMethodParameterTest(
+export function testMethodParameterDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -144,7 +144,7 @@ export function generateMethodParameterTest(
     }
 }
 
-export function generateStaticMethodTest(
+export function testStaticMethodDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -180,7 +180,7 @@ export function generateStaticMethodTest(
     }
 }
 
-export function generateStaticMethodParameterTest(
+export function testStaticMethodParameterDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -214,7 +214,7 @@ export function generateStaticMethodParameterTest(
     }
 }
 
-export function generatePropertyTest(
+export function testPropertyDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -250,7 +250,7 @@ export function generatePropertyTest(
     }
 }
 
-export function generateStaticPropertyTest(
+export function testStaticPropertyDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -286,7 +286,7 @@ export function generateStaticPropertyTest(
     }
 }
 
-export function generateAccessorTest(
+export function testAccessorDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -337,7 +337,7 @@ export function generateAccessorTest(
     }
 }
 
-export function generateStaticAccessorTest(
+export function testStaticAccessorDecorator(
     decorator: $Decorators.IGeneralDecorator,
     key: $Reflects.IMetadataKey,
     expectedValue: any
@@ -386,4 +386,134 @@ export function generateStaticAccessorTest(
             $Assert.strictEqual($Reflect.getStaticAccessorMetadata(Test, 'm2', key), expectedValue);
         });
     }
+}
+
+export function testSetOnClass(
+    ctor: $Decorators.IClassCtor,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+
+    it(`${ctor.name}::class: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getClassMetadata(ctor, key), value);
+    });
+}
+
+export function testSetOnCtorParam(
+    ctor: $Decorators.IClassCtor,
+    index: number,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+
+    it(`${ctor.name}::ctor-param[${index}]: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getConstructorParameterMetadata(ctor, index, key), value);
+    });
+}
+
+export function testSetOnProperty(
+    ctor: $Decorators.IClassCtor,
+    name: string,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+
+    it(`${ctor.name}::property[${name}]: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getPropertyMetadata(ctor, name, key), value);
+    });
+}
+
+export function testSetOnStaticProperty(
+    ctor: $Decorators.IClassCtor,
+    name: string,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+
+    it(`${ctor.name}::static-property[${name}]: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getStaticPropertyMetadata(ctor, name, key), value);
+    });
+}
+
+export function testSetOnMethod(
+    ctor: $Decorators.IClassCtor,
+    name: string,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+
+    it(`${ctor.name}::method[${name}]: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getMethodMetadata(ctor, name, key), value);
+    });
+}
+
+export function testSetOnMethodParam(
+    ctor: $Decorators.IClassCtor,
+    name: string,
+    index: number,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+
+    it(`${ctor.name}::method[${name}].param[${index}]: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getMethodParameterMetadata(ctor, name, index, key), value);
+    });
+}
+
+export function testSetOnStaticMethod(
+    ctor: $Decorators.IClassCtor,
+    name: string,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+
+    it(`${ctor.name}::static-method[${name}]: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getStaticMethodMetadata(ctor, name, key), value);
+    });
+}
+
+export function testSetOnStaticMethodParam(
+    ctor: $Decorators.IClassCtor,
+    name: string,
+    index: number,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+
+    it(`${ctor.name}::static-method[${name}].param[${index}]: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getStaticMethodParameterMetadata(ctor, name, index, key), value);
+    });
+}
+
+export function testSetOnAccessor(
+    ctor: $Decorators.IClassCtor,
+    name: string,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+
+    it(`${ctor.name}::accessor[${name}]: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getAccessorMetadata(ctor, name, key), value);
+    });
+}
+
+export function testSetOnStaticAccessor(
+    ctor: $Decorators.IClassCtor,
+    name: string,
+    key: $Reflects.IMetadataKey,
+    value: any
+): void {
+    it(`${ctor.name}::static-accessor[${name}]: for key "${key as string}" should get ${value}`, function() {
+
+        $Assert.strictEqual($Reflect.getStaticAccessorMetadata(ctor, name, key), value);
+    });
 }

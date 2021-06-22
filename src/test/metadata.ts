@@ -1,260 +1,175 @@
 import $Reflect from '../lib';
 import * as $Kits from './kits';
 
-describe('general-metadata-decorator', function() {
+describe('set-metadata-methods', function() {
 
-    describe('allowed all position', function() {
+    class Test1 {
 
-        const KEY = 'all-position';
-        const VALUE = 'OK';
+        public p1: number = 1;
+        public p2: number = 1;
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, []);
+        public static sp1: number = 123;
+        public static sp2: number = 123;
 
-        $Kits.generateClassTest(decorator, KEY, VALUE);
-        $Kits.generateCtorParamTest(decorator, KEY, VALUE);
-        $Kits.generateMethodTest(decorator, KEY, VALUE);
-        $Kits.generateMethodParameterTest(decorator, KEY, VALUE);
-        $Kits.generateStaticMethodTest(decorator, KEY, VALUE);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, VALUE);
-        $Kits.generatePropertyTest(decorator, KEY, VALUE);
-        $Kits.generateStaticPropertyTest(decorator, KEY, VALUE);
-        $Kits.generateAccessorTest(decorator, KEY, VALUE);
-        $Kits.generateStaticAccessorTest(decorator, KEY, VALUE);
+        public constructor(cp1: number, cp2: number) { console.log(cp1 + cp2); }
+
+        public get g1(): number { return 213; }
+
+        public set s1(v: number) { console.log(v); }
+
+        public m1(v: number, w: number): number { return v + w; }
+        public m2(v: number, w: number): number { return v + w; }
+
+        public static sm1(v: number, w: number): number { return v + w; }
+        public static sm2(v: number, w: number): number { return v + w; }
+
+        public static get sg1(): number { return 213; }
+
+        public static set ss1(v: number) { console.log(v); }
+    }
+
+    class Test2 {
+    }
+
+    const metaKeys: string[] = [
+        'class', 'ctor-param', 'method', 'method-param',
+        'static-method', 'static-method-param', 'property', 'static-property',
+        'accessor', 'static-accessor'
+    ];
+
+    function getKeys(excludes: string[]): string[] {
+
+        return metaKeys.filter((v) => !excludes.includes(v));
+    }
+
+    $Reflect.setClassMetadata(Test1, 'class', 'class-1');
+    $Reflect.setClassMetadata(Test2, 'class', 'class-2');
+    $Reflect.setConstructorParameterMetadata(Test1, 0, 'ctor-param', 'ctor-param-0');
+    $Reflect.setConstructorParameterMetadata(Test1, 1, 'ctor-param', 'ctor-param-1');
+    $Reflect.setMethodMetadata(Test1, 'm1', 'method', 'method-0');
+    $Reflect.setMethodMetadata(Test1, 'm2', 'method', 'method-1');
+    $Reflect.setMethodParameterMetadata(Test1, 'm1', 0, 'method-param', 'method-param-0');
+    $Reflect.setMethodParameterMetadata(Test1, 'm1', 1, 'method-param', 'method-param-1');
+    $Reflect.setStaticMethodMetadata(Test1, 'sm1', 'static-method', 'static-method-0');
+    $Reflect.setStaticMethodMetadata(Test1, 'sm2', 'static-method', 'static-method-1');
+    $Reflect.setStaticMethodParameterMetadata(Test1, 'sm1', 0, 'static-method-param', 'static-method-param-0');
+    $Reflect.setStaticMethodParameterMetadata(Test1, 'sm1', 1, 'static-method-param', 'static-method-param-1');
+    $Reflect.setPropertyMetadata(Test1, 'p1', 'property', 'property-0');
+    $Reflect.setPropertyMetadata(Test1, 'p2', 'property', 'property-1');
+    $Reflect.setStaticPropertyMetadata(Test1, 'sp1', 'static-property', 'static-property-0');
+    $Reflect.setStaticPropertyMetadata(Test1, 'sp2', 'static-property', 'static-property-1');
+    $Reflect.setAccessorMetadata(Test1, 'g1', 'accessor', 'accessor-g');
+    $Reflect.setAccessorMetadata(Test1, 's1', 'accessor', 'accessor-s');
+    $Reflect.setStaticAccessorMetadata(Test1, 'sg1', 'static-accessor', 'static-accessor-sg');
+    $Reflect.setStaticAccessorMetadata(Test1, 'ss1', 'static-accessor', 'static-accessor-ss');
+
+    describe('for class', function() {
+
+        $Kits.testSetOnClass(Test1, 'class', 'class-1');
+        $Kits.testSetOnClass(Test2, 'class', 'class-2');
+
+        for (const k of getKeys(['class'])) {
+
+            $Kits.testSetOnClass(Test1, k, undefined);
+        }
     });
 
-    describe('only class', function() {
+    describe('for ctor-param', function() {
 
-        const KEY = 'only-class';
-        const VALUE = 'OK';
+        $Kits.testSetOnCtorParam(Test1, 0, 'ctor-param', 'ctor-param-0');
+        $Kits.testSetOnCtorParam(Test1, 1, 'ctor-param', 'ctor-param-1');
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, ['class']);
+        for (const k of getKeys(['ctor-param'])) {
 
-        $Kits.generateClassTest(decorator, KEY, VALUE);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, Error);
-        $Kits.generateMethodParameterTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, Error);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, Error);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
+            $Kits.testSetOnCtorParam(Test1, 0, k, undefined);
+        }
     });
 
-    describe('only method', function() {
+    describe('for method', function() {
 
-        const KEY = 'only-method';
-        const VALUE = 'OK';
+        $Kits.testSetOnMethod(Test1, 'm1', 'method', 'method-0');
+        $Kits.testSetOnMethod(Test1, 'm2', 'method', 'method-1');
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, ['method']);
+        for (const k of getKeys(['method'])) {
 
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, VALUE);
-        $Kits.generateMethodParameterTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, Error);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, Error);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
+            $Kits.testSetOnMethod(Test1, 'm1', k, undefined);
+        }
     });
 
-    describe('only static method', function() {
+    describe('for property', function() {
 
-        const KEY = 'only-static-method';
-        const VALUE = 'OK';
+        $Kits.testSetOnProperty(Test1, 'p1', 'property', 'property-0');
+        $Kits.testSetOnProperty(Test1, 'p2', 'property', 'property-1');
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, ['staticMethod']);
+        for (const k of getKeys(['property'])) {
 
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, Error);
-        $Kits.generateMethodParameterTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodTest(decorator, KEY, VALUE);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, Error);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, Error);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
+            $Kits.testSetOnProperty(Test1, 'p1', k, undefined);
+        }
     });
 
-    describe('only method parameter', function() {
+    describe('for accessor', function() {
 
-        const KEY = 'only-method-parameter';
-        const VALUE = 'OK';
+        $Kits.testSetOnAccessor(Test1, 'g1', 'accessor', 'accessor-g');
+        $Kits.testSetOnAccessor(Test1, 's1', 'accessor', 'accessor-s');
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, ['methodParameter']);
+        for (const k of getKeys(['accessor'])) {
 
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, Error);
-        $Kits.generateMethodParameterTest(decorator, KEY, VALUE);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, Error);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, Error);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
+            $Kits.testSetOnAccessor(Test1, 'g1', k, undefined);
+        }
     });
 
-    describe('only static method parameter', function() {
+    describe('for static method', function() {
 
-        const KEY = 'only-static-method-parameter';
-        const VALUE = 'OK';
+        $Kits.testSetOnStaticMethod(Test1, 'sm1', 'static-method', 'static-method-0');
+        $Kits.testSetOnStaticMethod(Test1, 'sm2', 'static-method', 'static-method-1');
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, ['staticMethodParameter']);
+        for (const k of getKeys(['static-method'])) {
 
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, Error);
-        $Kits.generateMethodParameterTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, VALUE);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, Error);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
+            $Kits.testSetOnStaticMethod(Test1, 'sm1', k, undefined);
+        }
     });
 
-    describe('only property', function() {
+    describe('for static property', function() {
 
-        const KEY = 'only-property';
-        const VALUE = 'OK';
+        $Kits.testSetOnStaticProperty(Test1, 'sp1', 'static-property', 'static-property-0');
+        $Kits.testSetOnStaticProperty(Test1, 'sp2', 'static-property', 'static-property-1');
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, ['property']);
+        for (const k of getKeys(['static-property'])) {
 
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, Error);
-        $Kits.generateMethodParameterTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, Error);
-        $Kits.generatePropertyTest(decorator, KEY, VALUE);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, Error);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
+            $Kits.testSetOnStaticProperty(Test1, 'sp1', k, undefined);
+        }
     });
 
-    describe('only static property', function() {
+    describe('for static accessor', function() {
 
-        const KEY = 'only-static-property';
-        const VALUE = 'OK';
+        $Kits.testSetOnStaticAccessor(Test1, 'sg1', 'static-accessor', 'static-accessor-sg');
+        $Kits.testSetOnStaticAccessor(Test1, 'ss1', 'static-accessor', 'static-accessor-ss');
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, ['staticProperty']);
+        for (const k of getKeys(['static-accessor'])) {
 
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, Error);
-        $Kits.generateMethodParameterTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, Error);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, VALUE);
-        $Kits.generateAccessorTest(decorator, KEY, Error);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
+            $Kits.testSetOnStaticAccessor(Test1, 'sg1', k, undefined);
+        }
     });
 
-    describe('only accessor', function() {
+    describe('for method parameter', function() {
 
-        const KEY = 'only-accessor';
-        const VALUE = 'OK';
+        $Kits.testSetOnMethodParam(Test1, 'm1', 0, 'method-param', 'method-param-0');
+        $Kits.testSetOnMethodParam(Test1, 'm1', 1, 'method-param', 'method-param-1');
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, ['accessor']);
+        for (const k of getKeys(['method-param'])) {
 
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, Error);
-        $Kits.generateMethodParameterTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, Error);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, VALUE);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
+            $Kits.testSetOnMethodParam(Test1, 'm1', 0, k, undefined);
+        }
     });
 
-    describe('only static accessor', function() {
+    describe('for static method', function() {
 
-        const KEY = 'only-static-accessor';
-        const VALUE = 'OK';
+        $Kits.testSetOnStaticMethodParam(Test1, 'sm1', 0, 'static-method-param', 'static-method-param-0');
+        $Kits.testSetOnStaticMethodParam(Test1, 'sm1', 1, 'static-method-param', 'static-method-param-1');
 
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, ['staticAccessor']);
+        for (const k of getKeys(['static-method-param'])) {
 
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, Error);
-        $Kits.generateMethodParameterTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, Error);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, Error);
-        $Kits.generateStaticAccessorTest(decorator, KEY, VALUE);
-    });
-
-    describe('both method and accessor', function() {
-
-        const KEY = 'both-method-and-accessor';
-        const VALUE = 'OK';
-
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, [
-            'accessor', 'method'
-        ]);
-
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, Error);
-        $Kits.generateMethodTest(decorator, KEY, VALUE);
-        $Kits.generateMethodParameterTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, Error);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, VALUE);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
-    });
-
-    describe('all parameters', function() {
-
-        const KEY = 'all-parameters';
-        const VALUE = 'OK';
-
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, [
-            'ctorParameter', 'methodParameter', 'staticMethodParameter'
-        ]);
-
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, VALUE);
-        $Kits.generateMethodTest(decorator, KEY, Error);
-        $Kits.generateMethodParameterTest(decorator, KEY, VALUE);
-        $Kits.generateStaticMethodTest(decorator, KEY, Error);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, VALUE);
-        $Kits.generatePropertyTest(decorator, KEY, Error);
-        $Kits.generateStaticPropertyTest(decorator, KEY, Error);
-        $Kits.generateAccessorTest(decorator, KEY, Error);
-        $Kits.generateStaticAccessorTest(decorator, KEY, Error);
-    });
-
-    describe('except class', function() {
-
-        const KEY = 'except class';
-        const VALUE = 'OK';
-
-        const decorator = $Reflect.createGeneralMetadataDecorator(KEY, VALUE, [
-            'method', 'property', 'accessor',
-            'staticMethod', 'staticProperty', 'staticAccessor',
-            'ctorParameter', 'methodParameter', 'staticMethodParameter'
-        ]);
-
-        $Kits.generateClassTest(decorator, KEY, Error);
-        $Kits.generateCtorParamTest(decorator, KEY, VALUE);
-        $Kits.generateMethodTest(decorator, KEY, VALUE);
-        $Kits.generateMethodParameterTest(decorator, KEY, VALUE);
-        $Kits.generateStaticMethodTest(decorator, KEY, VALUE);
-        $Kits.generateStaticMethodParameterTest(decorator, KEY, VALUE);
-        $Kits.generatePropertyTest(decorator, KEY, VALUE);
-        $Kits.generateStaticPropertyTest(decorator, KEY, VALUE);
-        $Kits.generateAccessorTest(decorator, KEY, VALUE);
-        $Kits.generateStaticAccessorTest(decorator, KEY, VALUE);
+            $Kits.testSetOnStaticMethodParam(Test1, 'sm1', 0, k, undefined);
+        }
     });
 });
