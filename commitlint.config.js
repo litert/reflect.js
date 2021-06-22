@@ -7,7 +7,6 @@ module.exports = {
             'fix',
             'add',
             'build',
-            'config',
             'merge'
         ]],
         'scope-enum': [2, 'always', [

@@ -4,12 +4,14 @@
   "description": "A simple implementation of reflect & metadata.",
   "main": "./lib/index.js",
   "scripts": {
-    "prepublishOnly": "npm run rebuild",
+    "prepublishOnly": "npm run rebuild-production",
     "build": "echo Using TypeScript && tsc -v && tsc -p .",
+    "build-production": "echo Using TypeScript && tsc -v && tsc -p tsconfig.production.json",
     "build-watch": "echo Using TypeScript && tsc -v && tsc -w -p .",
     "rebuild": "npm run clean && npm run lint && npm run build",
+    "rebuild-production": "npm run clean && npm run lint && npm run build-production",
     "test": "mocha",
-    "clean": "rm -rf lib examples",
+    "clean": "rm -rf lib test examples",
     "typecheck": "tsc -p . --noEmit",
     "lint": "eslint --ext ts src"
   },

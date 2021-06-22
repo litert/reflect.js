@@ -7,61 +7,12 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "[LiteRT/Reflect.js] Example 01 - Quick Start",
-            "program": "${workspaceFolder}/src/examples/01-quick-start.ts",
+            "name": "[LiteRT/Reflect.js] Demo",
+            "program": "${workspaceFolder}/src/examples/demo.ts",
             "cwd": "${workspaceFolder}",
             "sourceMaps": true,
             "outFiles": [
-                "${workspaceFolder}/lib/*.js",
-                "${workspaceFolder}/examples/*.js"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "[LiteRT/Reflect.js] Example 02 - Wrap Decorator",
-            "program": "${workspaceFolder}/src/examples/02-wrap-decorator.ts",
-            "cwd": "${workspaceFolder}",
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceFolder}/lib/*.js",
-                "${workspaceFolder}/examples/*.js"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "[LiteRT/Reflect.js] Example 03 - AOP",
-            "program": "${workspaceFolder}/src/examples/03-aop.ts",
-            "cwd": "${workspaceFolder}",
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceFolder}/lib/*.js",
-                "${workspaceFolder}/examples/*.js"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "[LiteRT/Reflect.js] Example 04 - Constructor Parameter",
-            "program": "${workspaceFolder}/src/examples/04-constructor-parameters.ts",
-            "cwd": "${workspaceFolder}",
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceFolder}/lib/*.js",
-                "${workspaceFolder}/examples/*.js"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "[LiteRT/Reflect.js] Example 05 - Decorator",
-            "program": "${workspaceFolder}/src/examples/05-decorators.ts",
-            "cwd": "${workspaceFolder}",
-            "sourceMaps": true,
-            "outFiles": [
-                "${workspaceFolder}/lib/*.js",
-                "${workspaceFolder}/examples/*.js"
+                "${workspaceFolder}/**/*.js"
             ]
         }
     ]

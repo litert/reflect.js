@@ -22,6 +22,8 @@ Install by NPM:
 npm i @litert/reflect --save
 ```
 
+> For usage, see [demo](./src/examples/demo.ts)
+
 ## License
 
 This library is published under [Apache-2.0](./LICENSE) license.
