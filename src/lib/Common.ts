@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Angus.Fenying <fenying@litert.org>
+ * Copyright 2022 Angus.Fenying <fenying@litert.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import type * as $Decorators from '@litert/decorator';
 
 export type IMetadataKey = number | string | symbol;
 
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export type IDesignType = $Decorators.IClassCtor | void;
 
 export type IIdentityKey = string | symbol;

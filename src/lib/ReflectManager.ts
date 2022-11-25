@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Angus.Fenying <fenying@litert.org>
+ * Copyright 2022 Angus.Fenying <fenying@litert.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -226,7 +226,7 @@ function setMetadata(
         throw new TypeError(`Invalid value for metadata "${metadataKeyToString(key)}".`);
     }
 
-    let slot = vessel.get(key) ?? [];
+    const slot = vessel.get(key) ?? [];
 
     if (opts.wrapper) {
 
@@ -264,7 +264,7 @@ function getMetadata(
 
     const opts = getMetadataDefinition(mgr, key);
 
-    let slot = vessel.get(key) ?? [];
+    const slot = vessel.get(key) ?? [];
 
     if (slot.length) {
 
@@ -850,7 +850,7 @@ class ReflectManager implements C.IReflectManager {
 
         for (const k of ['validator', 'onDuplicated', 'wrapper'] as const) {
 
-            // @ts-ignore
+            // @ts-expect-error
             originOpts[k] = opts[k];
         }
 
